@@ -1,0 +1,49 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"pipeline": {
+		"build": {
+			"inputs": ["./lib/**"],
+			"outputs": ["./dist/**"],
+			"outputMode": "full",
+			"cache": true
+		},
+		"build:esbuild": {
+			"inputs": ["./lib/**"],
+			"outputs": ["./dist/**"],
+			"outputMode": "full",
+			"cache": true
+		},
+		"lint": {},
+		"fix": {},
+		"lint-staged": {
+			"cache": false
+		},
+		"test": {
+			"inputs": ["./lib/**", "./tests/**"]
+		},
+		"test:unit": {
+			"inputs": ["./lib/**", "./tests/**"]
+		},
+		"test:ci": {
+			"inputs": ["./lib/**", "./tests/**"]
+		},
+		"test:coverage": {
+			"inputs": ["./lib/**", "./tests/**"]
+		},
+		"push": {
+			"inputs": ["./prisma/schema.prisma"]
+		},
+		"pull": {
+			"inputs": ["./prisma/schema.prisma"]
+		},
+		"seed": {
+			"inputs": ["./prisma/schema.prisma", "./prisma/seed.ts"]
+		},
+		"seed:dev": {
+			"inputs": ["./prisma/schema.prisma", "./prisma/seed.ts"]
+		},
+		"generate": {
+			"inputs": ["./prisma/schema.prisma"]
+		}
+	}
+}

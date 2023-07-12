@@ -1,0 +1,49 @@
+name: 'CI'
+on:
+  push:
+    branches:
+      - main
+      - development
+      - develop
+      - dev
+      - staging
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    env:
+      NODE_ENV: testing
+      APP_ENV: testing
+      LOG_LEVEL: debug
+      DISABLE_LOGGING: false
+      HOST: 0.0.0.0
+      PORT: 3000
+      DATABASE_URL: mongodb://admin:admin@localhost:27017/database?retryWrites=true&w=majority&authSource=admin
+      QUEUE_URL: amqp://user:pass@localhost:5672
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [19.x]
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Start containers
+        run: docker compose up -d
+      - name: Install dependencies
+        run: npm ci --frozen-lockfile
+      - name: Generate Prisma client
+        run: npm run generate
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+      - name: Run tests
+        run: npm run test:ci
+      - name: Stop containers
+        run: docker compose down

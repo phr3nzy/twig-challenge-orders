@@ -1,0 +1,30 @@
+version: '4'
+services:
+  ordersDb:
+    image: bitnami/mongodb:latest
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=127.0.0.1
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_USER=admin
+      - MONGODB_ROOT_PASSWORD=admin
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGO_INITDB_DATABASE=database
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    restart: always
+  queue:
+    image: bitnami/rabbitmq:latest
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=pass
+    ports:
+      - 5672:5672
+      - 15672:15672
+    expose:
+      - 5672 # Main port
+      - 15672 # Management console
+    restart: always

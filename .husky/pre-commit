@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# If we're not in CI, run the pre-commit hook
+if [ -z "$CI" ]; then
+	# Check if .env file exists and export its values
+	if test -f ".env"; then
+		export $(cat .env)
+	fi
+
+	npm run lint && \
+	npm run lint-staged
+fi
