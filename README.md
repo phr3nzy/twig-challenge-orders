@@ -1,5 +1,25 @@
 # Twig Challenge: Orders Service
 
+## Description
+
+The project is a RESTful API for managing orders. It uses RabbitMQ for communication between services.
+
+## Structure
+
+```bash
+.
+├── .github # Github specific files (dependabot, workflows... etc.)
+├── .husky # husky dir (Readonly)
+├── lib
+│   └── server # contains the main files for the backend
+│       ├── config # stores configurations (server, logger, env vars... etc.)
+│       ├── plugins # Custom plugins for fastify (auth, security, cache, db... etc.)
+│       ├── routes # main routes
+│       └── services # contains the services (event handlers)
+├── prisma # prisma dir
+└── tests # written tests go here
+```
+
 ## Requirements
 
 - [Node.js](https://nodejs.org/en/)
@@ -28,8 +48,7 @@ $ npm run push
 
 # run in development mode
 $ npm run dev
+
+# running tests
+$ docker compose -f docker-compose.test.yml up --build --exit-code-from orders-service
 ```
-
-## License
-
-[See](./LICENSE.md)
