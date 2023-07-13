@@ -1,0 +1,63 @@
+version: '4'
+services:
+  orders-service:
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      PORT: 3000
+      LOG_LEVEL: debug
+      DATABASE_URL: mongodb://admin:admin@orders-db:27017/database?retryWrites=true&w=majority&authSource=admin
+      QUEUE_URL: amqp://user:pass@queue:5672
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: sh -c "sleep 15 && npm run push && npm run test:ci"
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
+    links:
+      - orders-db
+      - queue
+    depends_on:
+      - orders-db
+      - queue
+    restart: always
+    networks:
+      - default
+  orders-db:
+    image: bitnami/mongodb:latest
+    environment:
+      - MONGODB_ADVERTISED_HOSTNAME=orders-db
+      - MONGODB_REPLICA_SET_MODE=primary
+      - MONGODB_ROOT_USER=admin
+      - MONGODB_ROOT_PASSWORD=admin
+      - MONGODB_REPLICA_SET_KEY=replicasetkey123
+      - MONGO_INITDB_DATABASE=database
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=admin
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    restart: always
+    networks:
+      - default
+  queue:
+    image: bitnami/rabbitmq:latest
+    environment:
+      - RABBITMQ_DEFAULT_USER=user
+      - RABBITMQ_DEFAULT_PASS=pass
+    ports:
+      - 5672:5672
+      - 15672:15672
+    expose:
+      - 5672
+      - 15672
+    restart: always
+    networks:
+      - default
+
+networks:
+  default:
+    driver: bridge

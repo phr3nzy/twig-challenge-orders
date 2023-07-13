@@ -1,5 +1,6 @@
 import 'make-promises-safe';
 import '@total-typescript/ts-reset';
+
 import { bootstrap } from './server/index.js';
 
 /**

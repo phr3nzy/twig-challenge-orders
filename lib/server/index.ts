@@ -1,14 +1,16 @@
 // Main entrypoint for the server
 import sensible from '@fastify/sensible';
 import fastify from 'fastify';
+
 import { SERVER_CONFIG } from './config/server.js';
 import env from './plugins/config.js';
+import cors from './plugins/cors.js';
 import db from './plugins/db.js';
 import health from './plugins/health.js';
+import queue from './plugins/queue.js';
 import swagger from './plugins/swagger.js';
 import validator from './plugins/validator.js';
-import queue from './plugins/queue.js';
-import cors from './plugins/cors.js';
+import events from './services/events.js';
 
 export const bootstrap = async () => {
 	const server = fastify(SERVER_CONFIG);
@@ -30,6 +32,9 @@ export const bootstrap = async () => {
 	await server.register(queue);
 	// health plugin will add health check support
 	await server.register(health);
+
+	// Register services
+	await server.register(events);
 
 	// Register routes
 	await server.register(import('./routes/index.js'));

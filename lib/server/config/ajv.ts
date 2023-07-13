@@ -1,4 +1,5 @@
 import { Options } from 'ajv';
+
 import logger from './logger.js';
 
 /**

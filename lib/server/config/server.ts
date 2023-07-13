@@ -1,9 +1,10 @@
 import type { FastifyServerOptions } from 'fastify';
+import { IncomingMessage } from 'http';
 import qs from 'qs';
 import { v4 as uuid } from 'uuid';
-import { logger } from './logger.js';
+
 import { AJV_CONFIG } from './ajv.js';
-import { IncomingMessage } from 'http';
+import { logger } from './logger.js';
 
 // Generate a request id - this is used for logging and tracing
 function genReqId(_: IncomingMessage) {

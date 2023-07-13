@@ -1,6 +1,6 @@
 version: '4'
 services:
-  ordersDb:
+  orders-db:
     image: bitnami/mongodb:latest
     environment:
       - MONGODB_ADVERTISED_HOSTNAME=127.0.0.1

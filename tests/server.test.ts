@@ -11,7 +11,9 @@ describe('server', () => {
 	});
 
 	afterAll(async () => {
-		await server.close();
+		if (server) {
+			await server.close();
+		}
 	});
 
 	it('should have all plugins registered and ready to use', async () => {

@@ -1,6 +1,7 @@
 import env from '@fastify/env';
 import type { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
+
 import { ENVIRONMENT_VARIABLES_SCHEMA, TEnvSchema } from '../config/env.js';
 
 declare module 'fastify' {

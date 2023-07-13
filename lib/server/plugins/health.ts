@@ -35,11 +35,14 @@ export default fp(
 					};
 					const dbIsAlive = dbPing.ok === 1;
 
-					const channel = await app.queue.channel.assertQueue('health-check');
+					const channel = await app.queue.channel.assertQueue('health-check', {
+						durable: false,
+					});
 
 					app.queue.channel.sendToQueue(
 						channel.queue,
 						Buffer.from('health-check'),
+						{ persistent: false, expiration: 1000 },
 					);
 
 					const queueIsAlive = await app.queue.channel.get(channel.queue);

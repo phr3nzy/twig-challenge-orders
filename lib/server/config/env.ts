@@ -38,6 +38,23 @@ export const ENVIRONMENT_VARIABLES_SCHEMA = {
 			type: 'string',
 			format: 'uri',
 		},
+		EMAILS_QUEUE_NAME: {
+			type: 'string',
+			default: 'emails-queue',
+		},
+		PAYMENTS_QUEUE_NAME: {
+			type: 'string',
+			default: 'payments-queue',
+		},
+		ORDERS_QUEUE_NAME: {
+			type: 'string',
+			default: 'orders-queue',
+		},
+		PAYMENTS_SERVICE_URL: {
+			type: 'string',
+			format: 'uri',
+			default: 'http://localhost:3001',
+		},
 	},
 } as const;
 
