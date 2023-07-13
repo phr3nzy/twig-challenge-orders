@@ -8,12 +8,41 @@ on:
       - main
 jobs:
   test:
+    env:
+      NODE_ENV: testing
+      APP_ENV: testing
+      LOG_LEVEL: debug
+      DISABLE_LOGGING: false
+      HOST: 0.0.0.0
+      PORT: 3000
+      DATABASE_URL: mongodb://admin:admin@localhost:27017/database?retryWrites=true&w=majority&authSource=admin
+      QUEUE_URL: amqp://localhost:5672
+      CI: true
     runs-on: ubuntu-latest
     strategy:
+      matrix:
+        node-version: [20.x]
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - name: Start containers
+        run: docker compose up -d
+      - name: Install dependencies
+        run: npm ci --frozen-lockfile --legacy-peer-deps
+      - name: Generate Prisma client
+        run: npm run generate
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
+      - name: Run migrations
+        run: npm run push
       - name: Run tests
-        run: docker compose -f docker-compose.test.yml up --exit-code-from orders-service
-      - name: Shutdown test containers
-        run: docker compose -f docker-compose.test.yml down
+        run: npm run test:ci
+      - name: Stop containers
+        run: docker compose down
