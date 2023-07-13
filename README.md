@@ -37,6 +37,9 @@ npm install
 ## Usage
 
 ```bash
+# install dependencies
+$ npm install --legacy-peer-deps
+
 # spin up the necessary infrastructure (wait a bit till it's up)
 $ docker compose up -d
 
