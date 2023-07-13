@@ -10,10 +10,8 @@ jobs:
   test:
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        node-version: [19.x]
       fail-fast: true
     steps:
       - uses: actions/checkout@v3
       - name: Run tests
-        run: docker compose -f docker-compose.test.yml up --exit-code-from orders-service --abort-on-container-exit
+        run: docker compose -f docker-compose.test.yml up --exit-code-from orders-service
