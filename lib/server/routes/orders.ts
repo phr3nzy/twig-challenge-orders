@@ -47,6 +47,23 @@ export default async function orderRoutes(app: FastifyInstance) {
 			try {
 				const { email, amount, type } = request.body;
 
+				// Check if the order already exists
+				const existingOrder = await app.db.order.findFirst({
+					where: {
+						email,
+						amount,
+						type,
+						status: {
+							in: ['created', 'paymentInitiated'],
+						},
+					},
+				});
+
+				if (existingOrder) {
+					reply.badRequest('Order already exists.');
+					return;
+				}
+
 				const createdOrder = await app.db.order.create({
 					data: {
 						email,
