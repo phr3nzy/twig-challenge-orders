@@ -1,13 +1,13 @@
-import axios from 'axios';
+import axios, { Axios } from 'axios';
 import type { FastifyInstance } from 'fastify';
 import fp from 'fastify-plugin';
 
 declare module 'fastify' {
 	interface FastifyInstance {
-		httpClient: typeof axios;
+		httpClient: Axios;
 	}
 }
 
 export default fp(async (app: FastifyInstance) => {
-	app.decorate('httpClient', axios);
+	app.decorate('httpClient', axios.create());
 });

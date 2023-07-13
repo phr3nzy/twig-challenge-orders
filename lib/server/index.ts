@@ -7,6 +7,7 @@ import env from './plugins/config.js';
 import cors from './plugins/cors.js';
 import db from './plugins/db.js';
 import health from './plugins/health.js';
+import httpClient from './plugins/httpClient.js';
 import queue from './plugins/queue.js';
 import swagger from './plugins/swagger.js';
 import validator from './plugins/validator.js';
@@ -32,6 +33,8 @@ export const bootstrap = async () => {
 	await server.register(queue);
 	// health plugin will add health check support
 	await server.register(health);
+	// httpClient plugin will add axios support
+	await server.register(httpClient);
 
 	// Register services
 	await server.register(events);
