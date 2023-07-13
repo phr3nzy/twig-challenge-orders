@@ -31,13 +31,13 @@ export default async function events(app: FastifyInstance) {
 
 			switch (message) {
 				case 'payment-completed': {
-					const { paymentId, status } = data;
+					const { paymentId } = data;
 
 					const order = await app.db.order.findUnique({
 						where: { paymentId },
 					});
 
-					if (order && status === 'completed') {
+					if (order) {
 						await app.db.order.update({
 							where: { id: order.id },
 							data: {
@@ -48,13 +48,14 @@ export default async function events(app: FastifyInstance) {
 					break;
 				}
 				case 'orders-email-sent': {
+					app.log.info('Updating order email sent state.');
 					const { orderId } = data;
 
 					const order = await app.db.order.findUnique({
 						where: { id: orderId },
 					});
 
-					if (order && order.status === 'completed') {
+					if (order) {
 						await app.db.order.update({
 							where: { id: orderId },
 							data: {
@@ -62,6 +63,9 @@ export default async function events(app: FastifyInstance) {
 							},
 						});
 					}
+
+					app.log.info('Order orderEmailSent state updated.');
+
 					break;
 				}
 				case 'payments-email-sent': {
@@ -79,6 +83,9 @@ export default async function events(app: FastifyInstance) {
 							},
 						});
 					}
+
+					app.log.info('Order paymentEmailSent state updated.');
+
 					break;
 				}
 			}
