@@ -16,7 +16,7 @@ jobs:
       HOST: 0.0.0.0
       PORT: 3000
       DATABASE_URL: mongodb://admin:admin@localhost:27017/database?retryWrites=true&w=majority&authSource=admin
-      QUEUE_URL: amqp://localhost:5672
+      QUEUE_URL: amqp://user:pass@localhost:5672
       CI: true
     runs-on: ubuntu-latest
     strategy:
