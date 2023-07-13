@@ -33,7 +33,7 @@ export default async function events(app: FastifyInstance) {
 				case 'payment-completed': {
 					const { paymentId } = data;
 
-					const order = await app.db.order.findUnique({
+					const order = await app.db.order.findFirst({
 						where: { paymentId },
 					});
 
@@ -51,7 +51,7 @@ export default async function events(app: FastifyInstance) {
 					app.log.info('Updating order email sent state.');
 					const { orderId } = data;
 
-					const order = await app.db.order.findUnique({
+					const order = await app.db.order.findFirst({
 						where: { id: orderId },
 					});
 
@@ -71,7 +71,7 @@ export default async function events(app: FastifyInstance) {
 				case 'payments-email-sent': {
 					const { paymentId } = data;
 
-					const order = await app.db.order.findUnique({
+					const order = await app.db.order.findFirst({
 						where: { paymentId },
 					});
 
