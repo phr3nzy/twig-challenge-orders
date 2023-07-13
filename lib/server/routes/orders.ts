@@ -133,7 +133,7 @@ export default async function orderRoutes(app: FastifyInstance) {
 			querystring: app.fluentSchema
 				.object()
 				.additionalProperties(false)
-				.prop('orderId', app.fluentSchema.string().required().format('uuid')),
+				.prop('orderId', app.fluentSchema.string().required()),
 			response: {
 				200: app.fluentSchema
 					.object()
@@ -152,6 +152,9 @@ export default async function orderRoutes(app: FastifyInstance) {
 								'type',
 								app.fluentSchema.string().enum(['jewelry', 'shoes', 'grocery']),
 							)
+							.prop('paymentId', app.fluentSchema.string())
+							.prop('orderEmailSent', app.fluentSchema.boolean())
+							.prop('paymentEmailSent', app.fluentSchema.boolean())
 							.prop(
 								'status',
 								app.fluentSchema
