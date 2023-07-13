@@ -71,7 +71,7 @@ export default async function events(app: FastifyInstance) {
 						where: { paymentId },
 					});
 
-					if (order && order.status === 'completed') {
+					if (order) {
 						await app.db.order.update({
 							where: { id: order.id },
 							data: {
